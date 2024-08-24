@@ -6,9 +6,14 @@ package certificates
 
 import (
 	"context"
+	md52 "crypto/md5"
+	"encoding/hex"
+	"io"
+	"strings"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	vcfclient "github.com/vmware/vcf-sdk-go/client"
 	"github.com/vmware/vcf-sdk-go/client/certificates"
 	"github.com/vmware/vcf-sdk-go/models"
@@ -119,4 +124,64 @@ func GenerateCertificateForResource(ctx context.Context, client *api_client.Sddc
 		return err
 	}
 	return nil
+}
+
+func ReadCertificates(ctx context.Context, data *schema.ResourceData, client *api_client.SddcManagerClient) ([]*models.Certificate, error) {
+	domainID := data.Get("domain_id").(string)
+	resourceFqdn := data.Get("resource_fqdn").(string)
+
+	// Fetch the certificate for the given domain and FQDN
+	certificate, err := GetCertificateForResourceInDomain(ctx, client.ApiClient, domainID, resourceFqdn)
+	if err != nil {
+		return nil, err
+	}
+
+	if certificate == nil {
+		return nil, nil // No certificate found
+	}
+
+	return []*models.Certificate{certificate}, nil
+}
+
+// FlattenCertificates converts certificate data into a format suitable for Terraform
+func FlattenCertificates(certs []*models.Certificate) []map[string]interface{} {
+	var result []map[string]interface{}
+
+	for _, cert := range certs {
+		certMap := make(map[string]interface{})
+		certMap["certificate_error"] = cert.CertificateError
+		certMap["domain"] = cert.Domain
+		certMap["expiration_status"] = cert.ExpirationStatus
+		certMap["issued_by"] = cert.IssuedBy
+		certMap["issued_to"] = cert.IssuedTo
+		certMap["key_size"] = cert.KeySize
+		certMap["not_after"] = cert.NotAfter
+		certMap["not_before"] = cert.NotBefore
+		certMap["number_of_days_to_expire"] = cert.NumberOfDaysToExpire
+		certMap["pem_encoded"] = cert.PemEncoded
+		certMap["public_key"] = cert.PublicKey
+		certMap["public_key_algorithm"] = cert.PublicKeyAlgorithm
+		certMap["serial_number"] = cert.SerialNumber
+		certMap["signature_algorithm"] = cert.SignatureAlgorithm
+		certMap["subject"] = cert.Subject
+		certMap["subject_alternative_name"] = cert.SubjectAlternativeName
+		certMap["thumbprint"] = cert.Thumbprint
+		certMap["thumbprint_algorithm"] = cert.ThumbprintAlgorithm
+		certMap["version"] = cert.Version
+
+		result = append(result, certMap)
+	}
+
+	return result
+}
+
+func HashFields(fields []string) (string, error) {
+	md5 := md52.New()
+	_, err := io.WriteString(md5, strings.Join(fields, ""))
+
+	if err != nil {
+		return "", err
+	}
+
+	return hex.EncodeToString(md5.Sum(nil)), nil
 }
