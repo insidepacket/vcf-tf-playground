@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"log"
 	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -122,7 +123,7 @@ func DataSourceCertificates() *schema.Resource {
 
 func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	apiClient := meta.(*api_client.SddcManagerClient).ApiClient
-
+	log.Print("[DEBUG] Something wrong at dataCertificateRead")
 	// Extract the domain_id from ResourceData
 	domainId, ok := data.Get("domain_id").(string)
 	if !ok || domainId == "" {

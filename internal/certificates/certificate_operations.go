@@ -9,6 +9,7 @@ import (
 	md52 "crypto/md5"
 	"encoding/hex"
 	"io"
+	"log"
 	"strings"
 	"time"
 
@@ -131,6 +132,7 @@ func ReadCertificates(ctx context.Context, client *vcfclient.VcfClient, domainId
 	viewCertificatesParams.ID = domainId
 
 	certificatesResponse, _, err := client.Certificates.GetCertificatesByDomain(viewCertificatesParams)
+
 	if err != nil {
 		return nil, err
 	}
@@ -140,6 +142,7 @@ func ReadCertificates(ctx context.Context, client *vcfclient.VcfClient, domainId
 
 // FlattenCertificates converts certificate data into a format suitable for Terraform
 func FlattenCertificates(certs []*models.Certificate) []map[string]interface{} {
+	log.Print("[DEBUG] Something wrong at FlattenCertificates")
 	var result []map[string]interface{}
 
 	for _, cert := range certs {
