@@ -142,7 +142,7 @@ func ReadCertificates(ctx context.Context, client *vcfclient.VcfClient, domainId
 
 // FlattenCertificates converts certificate data into a format suitable for Terraform
 func FlattenCertificates(certs []*models.Certificate) []map[string]interface{} {
-	log.Print("[DEBUG] Something wrong at FlattenCertificates")
+	log.Print("[DEBUG] FUnction FlattenCertificates start")
 	var result []map[string]interface{}
 
 	for _, cert := range certs {
@@ -167,7 +167,7 @@ func FlattenCertificates(certs []*models.Certificate) []map[string]interface{} {
 
 		result = append(result, certMap)
 	}
-
+	log.Print("[DEBUG] FUnction FlattenCertificates finish")
 	return result
 }
 

@@ -123,7 +123,7 @@ func DataSourceCertificates() *schema.Resource {
 
 func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	apiClient := meta.(*api_client.SddcManagerClient).ApiClient
-	log.Print("[DEBUG] Something wrong at dataCertificateRead")
+	log.Print("[DEBUG] Function dataCertificateRead start")
 	// Extract the domain_id from ResourceData
 	domainId, ok := data.Get("domain_id").(string)
 	if !ok || domainId == "" {
@@ -146,6 +146,7 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	}
 
 	data.SetId(id)
+	log.Print("[DEBUG] Function dataCertificateRead finish")
 
 	return nil
 }
