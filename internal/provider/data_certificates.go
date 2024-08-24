@@ -130,6 +130,9 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 
 	// Extract the domain_id from ResourceData
 	domainId := data.Get("domain_id").(string)
+	if !ok || domainId == "" {
+		return diag.Errorf("domain_id must be set and cannot be empty")
+	}
 
 	// Call ReadCertificates with the domainId
 	certs, err := certificates.ReadCertificates(ctx, apiClient, domainId)
