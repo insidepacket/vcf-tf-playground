@@ -145,42 +145,121 @@ func ReadCertificates(ctx context.Context, client *vcfclient.VcfClient, domainId
 // FlattenCertificates converts certificate data into a format suitable for Terraform
 func FlattenCertificates(certs []*models.Certificate) []map[string]interface{} {
 	log.Printf("[DEBUG] Function FlattenCertificates start")
-
-	// Handle nil input for certs
-	if certs == nil {
-		return []map[string]interface{}{}
-	}
-
-	// Initialize the result slice
-	result := make([]map[string]interface{}, 0)
+	var result []map[string]interface{}
 
 	for _, cert := range certs {
-		// Create a map for each certificate
-		certMap := map[string]interface{}{
-			"domain":                   *cert.Domain,
-			"expiration_status":        *cert.ExpirationStatus,
-			"issued_by":                *cert.IssuedBy,
-			"issued_to":                *cert.IssuedTo,
-			"key_size":                 *cert.KeySize,
-			"not_after":                *cert.NotAfter,
-			"not_before":               *cert.NotBefore,
-			"number_of_days_to_expire": *cert.NumberOfDaysToExpire,
-			"pem_encoded":              *cert.PemEncoded,
-			"public_key":               *cert.PublicKey,
-			"public_key_algorithm":     *cert.PublicKeyAlgorithm,
-			"serial_number":            *cert.SerialNumber,
-			"signature_algorithm":      *cert.SignatureAlgorithm,
-			"subject":                  *cert.Subject,
-			"subject_alternative_name": cert.SubjectAlternativeName,
-			"thumbprint":               *cert.Thumbprint,
-			"thumbprint_algorithm":     *cert.ThumbprintAlgorithm,
+		certMap := make(map[string]interface{})
+
+		// Dereference pointer fields or set them to nil
+		if cert.Domain != nil {
+			certMap["domain"] = *cert.Domain
+		} else {
+			certMap["domain"] = nil
 		}
 
-		// Append the cert map to the result slice
+		if cert.ExpirationStatus != nil {
+			certMap["expiration_status"] = *cert.ExpirationStatus
+		} else {
+			certMap["expiration_status"] = nil
+		}
+
+		if cert.IssuedBy != nil {
+			certMap["issued_by"] = *cert.IssuedBy
+		} else {
+			certMap["issued_by"] = nil
+		}
+
+		if cert.IssuedTo != nil {
+			certMap["issued_to"] = *cert.IssuedTo
+		} else {
+			certMap["issued_to"] = nil
+		}
+
+		if cert.KeySize != nil {
+			certMap["key_size"] = *cert.KeySize
+		} else {
+			certMap["key_size"] = nil
+		}
+
+		if cert.NotAfter != nil {
+			certMap["not_after"] = *cert.NotAfter
+		} else {
+			certMap["not_after"] = nil
+		}
+
+		if cert.NotBefore != nil {
+			certMap["not_before"] = *cert.NotBefore
+		} else {
+			certMap["not_before"] = nil
+		}
+
+		if cert.NumberOfDaysToExpire != nil {
+			certMap["number_of_days_to_expire"] = *cert.NumberOfDaysToExpire
+		} else {
+			certMap["number_of_days_to_expire"] = nil
+		}
+
+		if cert.PemEncoded != nil {
+			certMap["pem_encoded"] = *cert.PemEncoded
+		} else {
+			certMap["pem_encoded"] = nil
+		}
+
+		if cert.PublicKey != nil {
+			certMap["public_key"] = *cert.PublicKey
+		} else {
+			certMap["public_key"] = nil
+		}
+
+		if cert.PublicKeyAlgorithm != nil {
+			certMap["public_key_algorithm"] = *cert.PublicKeyAlgorithm
+		} else {
+			certMap["public_key_algorithm"] = nil
+		}
+
+		if cert.SerialNumber != nil {
+			certMap["serial_number"] = *cert.SerialNumber
+		} else {
+			certMap["serial_number"] = nil
+		}
+
+		if cert.SignatureAlgorithm != nil {
+			certMap["signature_algorithm"] = *cert.SignatureAlgorithm
+		} else {
+			certMap["signature_algorithm"] = nil
+		}
+
+		if cert.Subject != nil {
+			certMap["subject"] = *cert.Subject
+		} else {
+			certMap["subject"] = nil
+		}
+
+		// Handle SubjectAlternativeName, which is a slice of strings
+		if cert.SubjectAlternativeName != nil {
+			certMap["subject_alternative_name"] = cert.SubjectAlternativeName
+		} else {
+			certMap["subject_alternative_name"] = nil
+		}
+
+		if cert.Thumbprint != nil {
+			certMap["thumbprint"] = *cert.Thumbprint
+		} else {
+			certMap["thumbprint"] = nil
+		}
+
+		if cert.ThumbprintAlgorithm != nil {
+			certMap["thumbprint_algorithm"] = *cert.ThumbprintAlgorithm
+		} else {
+			certMap["thumbprint_algorithm"] = nil
+		}
+
+		// Append the populated map to the results slice
 		result = append(result, certMap)
 	}
 
-	log.Printf("[DEBUG] Function FlattenCertificates cert-result: %+v", result)
+	// Log the resulting map after flattening and before returning
+	log.Printf("[DEBUG] Function FlattenCertificates result: %+v", result)
 	log.Printf("[DEBUG] Function FlattenCertificates finish")
 	return result
 }
