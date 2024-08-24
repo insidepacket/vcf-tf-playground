@@ -16,11 +16,6 @@ func DataSourceCertificate() *schema.Resource {
 		ReadContext: dataCertificateRead,
 		Description: "Datasource used to extract certificate details for various resources based on fields like issued_by, issued_to, key_size, and others.",
 		Schema: map[string]*schema.Schema{
-			"certificate_error": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "Error status of the certificate, if any.",
-			},
 			"domain": {
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -138,7 +133,6 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 
 func createCertificateID(data *schema.ResourceData) (string, error) {
 	params := []string{
-		data.Get("certificate_error").(string),
 		data.Get("domain").(string),
 		data.Get("expiration_status").(string),
 		data.Get("issued_by").(string),

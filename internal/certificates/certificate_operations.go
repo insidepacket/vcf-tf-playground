@@ -149,7 +149,6 @@ func FlattenCertificates(certs []*models.Certificate) []map[string]interface{} {
 
 	for _, cert := range certs {
 		certMap := make(map[string]interface{})
-		certMap["certificate_error"] = cert.CertificateError
 		certMap["domain"] = cert.Domain
 		certMap["expiration_status"] = cert.ExpirationStatus
 		certMap["issued_by"] = cert.IssuedBy
