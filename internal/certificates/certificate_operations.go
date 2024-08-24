@@ -161,7 +161,6 @@ func FlattenCertificates(certs []*models.Certificate) []map[string]interface{} {
 		certMap["subject_alternative_name"] = cert.SubjectAlternativeName
 		certMap["thumbprint"] = cert.Thumbprint
 		certMap["thumbprint_algorithm"] = cert.ThumbprintAlgorithm
-		certMap["version"] = cert.Version
 
 		result = append(result, certMap)
 	}

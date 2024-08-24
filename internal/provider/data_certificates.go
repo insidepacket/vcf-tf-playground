@@ -113,11 +113,6 @@ func DataSourceCertificates() *schema.Resource {
 							Computed:    true,
 							Description: "The algorithm used to generate the thumbprint.",
 						},
-						"version": {
-							Type:        schema.TypeInt,
-							Computed:    true,
-							Description: "The version of the certificate.",
-						},
 					},
 				},
 			},
@@ -172,7 +167,6 @@ func createCertificateID(data *schema.ResourceData) (string, error) {
 		data.Get("subject").(string),
 		data.Get("thumbprint").(string),
 		data.Get("thumbprint_algorithm").(string),
-		data.Get("version").(string),
 	}
 
 	return certificates.HashFields(params)
