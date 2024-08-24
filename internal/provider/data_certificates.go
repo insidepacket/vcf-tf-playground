@@ -48,7 +48,7 @@ func DataSourceCertificates() *schema.Resource {
 							Description: "The entity to which the certificate was issued.",
 						},
 						"key_size": {
-							Type:        schema.TypeInt,
+							Type:        schema.TypeString,
 							Computed:    true,
 							Description: "The size of the key in the certificate.",
 						},
