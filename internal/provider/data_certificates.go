@@ -127,9 +127,9 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	// Extract the domain_id from ResourceData
 	domainId, ok := data.Get("domain_id").(string)
 	if !ok {
-		log.Print("[DEBUG] Function dataCertificateRead start, domainId not found or not a string")
+		log.Print("[DEBUG] Function dataCertificateRead, domainId not found or not a string")
 	} else {
-		log.Printf("[DEBUG] Function dataCertificateRead start, domainId: %s", domainId)
+		log.Printf("[DEBUG] Function dataCertificateRead, domainId: %s", domainId)
 	}
 
 	// Call ReadCertificates with the domainId
@@ -137,7 +137,7 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	if err != nil {
 		return diag.FromErr(err)
 	}
-
+	log.Printf("[DEBUG] Function dataCertificateRead, certs: %+v", certs)
 	// FlattenCertificates expects a slice of certificates
 	flatCertificates := certificates.FlattenCertificates(certs)
 	_ = data.Set("certificates", flatCertificates)
