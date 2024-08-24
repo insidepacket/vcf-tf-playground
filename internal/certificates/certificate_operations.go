@@ -13,7 +13,6 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	vcfclient "github.com/vmware/vcf-sdk-go/client"
 	"github.com/vmware/vcf-sdk-go/client/certificates"
 	"github.com/vmware/vcf-sdk-go/models"
@@ -126,21 +125,24 @@ func GenerateCertificateForResource(ctx context.Context, client *api_client.Sddc
 	return nil
 }
 
-func ReadCertificates(ctx context.Context, data *schema.ResourceData, client *api_client.SddcManagerClient) ([]*models.Certificate, error) {
-	domainID := data.Get("domain_id").(string)
-	resourceFqdn := data.Get("resource_fqdn").(string)
+func ReadCertificates(ctx context.Context, client *vcfclient.VcfClient,
+	domainId, resourceFqdn string) (*models.Certificate, error) {
+	viewCertificatesParams := certificates.NewGetCertificatesByDomainParamsWithContext(ctx).
+		WithTimeout(constants.DefaultVcfApiCallTimeout)
+	viewCertificatesParams.ID = domainId
 
-	// Fetch the certificate for the given domain and FQDN
-	certificate, err := GetCertificateForResourceInDomain(ctx, client.ApiClient, domainID, resourceFqdn)
+	certificatesResponse, _, err := client.Certificates.GetCertificatesByDomain(viewCertificatesParams)
 	if err != nil {
 		return nil, err
 	}
 
-	if certificate == nil {
-		return nil, nil // No certificate found
+	allCertsForDomain := certificatesResponse.Payload.Elements
+	for _, cert := range allCertsForDomain {
+		if cert.IssuedTo != nil && *cert.IssuedTo == resourceFqdn {
+			return cert, nil
+		}
 	}
-
-	return []*models.Certificate{certificate}, nil
+	return nil, nil
 }
 
 // FlattenCertificates converts certificate data into a format suitable for Terraform
