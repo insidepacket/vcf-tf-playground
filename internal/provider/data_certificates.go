@@ -9,104 +9,117 @@ import (
 
 	"github.com/vmware/terraform-provider-vcf/internal/api_client"
 	"github.com/vmware/terraform-provider-vcf/internal/certificates" // Ensure this package exists and contains necessary methods
-	"github.com/vmware/vcf-sdk-go/models"
 )
 
-func DataSourceCertificate() *schema.Resource {
+func DataSourceCertificates() *schema.Resource {
 	return &schema.Resource{
 		ReadContext: dataCertificateRead,
-		Description: "Datasource used to extract certificate details for various resources based on fields like issued_by, issued_to, key_size, and others.",
+		Description: "Datasource used to extract certificate details for various resources based on fields like domain, issued_by, issued_to, key_size, and others.",
 		Schema: map[string]*schema.Schema{
-			"domain": {
+			"domain_id": {
 				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "The domain associated with the certificate.",
+				Required:    true,
+				Description: "The ID of the domain to fetch certificates for.",
 			},
-			"expiration_status": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "The current expiration status of the certificate.",
-			},
-			"issued_by": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "The entity that issued the certificate.",
-			},
-			"issued_to": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "The entity to which the certificate was issued.",
-			},
-			"key_size": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "The size of the key used in the certificate.",
-			},
-			"not_after": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "The date and time after which the certificate is no longer valid (in ISO 8601 format).",
-			},
-			"not_before": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "The date and time before which the certificate is not valid (in ISO 8601 format).",
-			},
-			"number_of_days_to_expire": {
-				Type:        schema.TypeInt,
-				Optional:    true,
-				Description: "Number of days remaining before the certificate expires.",
-			},
-			"pem_encoded": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "PEM encoded certificate string.",
-			},
-			"public_key": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "Public key associated with the certificate.",
-			},
-			"public_key_algorithm": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "Algorithm used for the public key.",
-			},
-			"serial_number": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "Serial number of the certificate.",
-			},
-			"signature_algorithm": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "Signature algorithm used in the certificate.",
-			},
-			"subject": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "Subject of the certificate.",
-			},
-			"subject_alternative_name": {
+			"certificates": {
 				Type:        schema.TypeList,
-				Optional:    true,
-				Description: "Subject Alternative Names (SANs) of the certificate.",
-				Elem:        &schema.Schema{Type: schema.TypeString},
-			},
-			"thumbprint": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "Thumbprint of the certificate.",
-			},
-			"thumbprint_algorithm": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "Algorithm used to generate the thumbprint.",
-			},
-			"version": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "Version of the certificate.",
+				Computed:    true,
+				Description: "List of certificates retrieved from the API.",
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"domain": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The domain of the certificate.",
+						},
+						"expiration_status": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The expiration status of the certificate.",
+						},
+						"issued_by": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The entity that issued the certificate.",
+						},
+						"issued_to": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The entity to which the certificate was issued.",
+						},
+						"key_size": {
+							Type:        schema.TypeInt,
+							Computed:    true,
+							Description: "The size of the key in the certificate.",
+						},
+						"not_after": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The date after which the certificate is no longer valid.",
+						},
+						"not_before": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The date before which the certificate is not valid.",
+						},
+						"number_of_days_to_expire": {
+							Type:        schema.TypeInt,
+							Computed:    true,
+							Description: "The number of days until the certificate expires.",
+						},
+						"pem_encoded": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The PEM-encoded certificate.",
+						},
+						"public_key": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The public key of the certificate.",
+						},
+						"public_key_algorithm": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The algorithm used for the public key.",
+						},
+						"serial_number": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The serial number of the certificate.",
+						},
+						"signature_algorithm": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The algorithm used for the certificate's signature.",
+						},
+						"subject": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The subject of the certificate.",
+						},
+						"subject_alternative_name": {
+							Type:        schema.TypeList,
+							Computed:    true,
+							Description: "The subject alternative names in the certificate.",
+							Elem:        &schema.Schema{Type: schema.TypeString},
+						},
+						"thumbprint": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The thumbprint of the certificate.",
+						},
+						"thumbprint_algorithm": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The algorithm used to generate the thumbprint.",
+						},
+						"version": {
+							Type:        schema.TypeInt,
+							Computed:    true,
+							Description: "The version of the certificate.",
+						},
+					},
+				},
 			},
 		},
 	}
@@ -115,19 +128,17 @@ func DataSourceCertificate() *schema.Resource {
 func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	apiClient := meta.(*api_client.SddcManagerClient).ApiClient
 
-	// Extract required parameters from ResourceData
+	// Extract the domain_id from ResourceData
 	domainId := data.Get("domain_id").(string)
-	resourceFqdn := data.Get("resource_fqdn").(string)
 
-	// Call ReadCertificates with the correct parameters
-	cert, err := certificates.ReadCertificates(ctx, apiClient, domainId, resourceFqdn)
+	// Call ReadCertificates with the domainId
+	certs, err := certificates.ReadCertificates(ctx, apiClient, domainId)
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
-	// FlattenCertificates expects a slice, so wrap cert in a slice
-	certificatesList := []*models.Certificate{cert}
-	flatCertificates := certificates.FlattenCertificates(certificatesList)
+	// FlattenCertificates expects a slice of certificates
+	flatCertificates := certificates.FlattenCertificates(certs)
 	_ = data.Set("certificates", flatCertificates)
 
 	id, err := createCertificateID(data)
