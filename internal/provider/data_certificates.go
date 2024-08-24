@@ -9,6 +9,7 @@ import (
 
 	"github.com/vmware/terraform-provider-vcf/internal/api_client"
 	"github.com/vmware/terraform-provider-vcf/internal/certificates" // Ensure this package exists and contains necessary methods
+	"github.com/vmware/vcf-sdk-go/models"
 )
 
 func DataSourceCertificate() *schema.Resource {
@@ -113,12 +114,20 @@ func DataSourceCertificate() *schema.Resource {
 
 func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	apiClient := meta.(*api_client.SddcManagerClient).ApiClient
-	certs, err := certificates.ReadCertificates(ctx, data, apiClient)
+
+	// Extract required parameters from ResourceData
+	domainId := data.Get("domain_id").(string)
+	resourceFqdn := data.Get("resource_fqdn").(string)
+
+	// Call ReadCertificates with the correct parameters
+	cert, err := certificates.ReadCertificates(ctx, apiClient, domainId, resourceFqdn)
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
-	flatCertificates := certificates.FlattenCertificates(certs)
+	// FlattenCertificates expects a slice, so wrap cert in a slice
+	certificatesList := []*models.Certificate{cert}
+	flatCertificates := certificates.FlattenCertificates(certificatesList)
 	_ = data.Set("certificates", flatCertificates)
 
 	id, err := createCertificateID(data)
