@@ -144,33 +144,44 @@ func ReadCertificates(ctx context.Context, client *vcfclient.VcfClient, domainId
 
 // FlattenCertificates converts certificate data into a format suitable for Terraform
 func FlattenCertificates(certs []*models.Certificate) []map[string]interface{} {
-	log.Printf("[DEBUG] FUnction FlattenCertificates start")
-	var result []map[string]interface{}
+	log.Printf("[DEBUG] Function FlattenCertificates start")
+
+	// Handle nil input for certs
+	if certs == nil {
+		return []map[string]interface{}{}
+	}
+
+	// Initialize the result slice
+	result := make([]map[string]interface{}, 0)
 
 	for _, cert := range certs {
-		certMap := make(map[string]interface{})
-		certMap["domain"] = cert.Domain
-		certMap["expiration_status"] = cert.ExpirationStatus
-		certMap["issued_by"] = cert.IssuedBy
-		certMap["issued_to"] = cert.IssuedTo
-		certMap["key_size"] = cert.KeySize
-		certMap["not_after"] = cert.NotAfter
-		certMap["not_before"] = cert.NotBefore
-		certMap["number_of_days_to_expire"] = cert.NumberOfDaysToExpire
-		certMap["pem_encoded"] = cert.PemEncoded
-		certMap["public_key"] = cert.PublicKey
-		certMap["public_key_algorithm"] = cert.PublicKeyAlgorithm
-		certMap["serial_number"] = cert.SerialNumber
-		certMap["signature_algorithm"] = cert.SignatureAlgorithm
-		certMap["subject"] = cert.Subject
-		certMap["subject_alternative_name"] = cert.SubjectAlternativeName
-		certMap["thumbprint"] = cert.Thumbprint
-		certMap["thumbprint_algorithm"] = cert.ThumbprintAlgorithm
+		// Create a map for each certificate
+		certMap := map[string]interface{}{
+			"domain":                   cert.Domain,
+			"expiration_status":        cert.ExpirationStatus,
+			"issued_by":                cert.IssuedBy,
+			"issued_to":                cert.IssuedTo,
+			"key_size":                 cert.KeySize,
+			"not_after":                cert.NotAfter,
+			"not_before":               cert.NotBefore,
+			"number_of_days_to_expire": cert.NumberOfDaysToExpire,
+			"pem_encoded":              cert.PemEncoded,
+			"public_key":               cert.PublicKey,
+			"public_key_algorithm":     cert.PublicKeyAlgorithm,
+			"serial_number":            cert.SerialNumber,
+			"signature_algorithm":      cert.SignatureAlgorithm,
+			"subject":                  cert.Subject,
+			"subject_alternative_name": cert.SubjectAlternativeName,
+			"thumbprint":               cert.Thumbprint,
+			"thumbprint_algorithm":     cert.ThumbprintAlgorithm,
+		}
 
+		// Append the cert map to the result slice
 		result = append(result, certMap)
 	}
-	log.Printf("[DEBUG] FUnction FlattenCertificates finish")
-	log.Printf("[DEBUG] FUnction FlattenCertificates cert-result: %+v", result)
+
+	log.Printf("[DEBUG] Function FlattenCertificates cert-result: %+v", result)
+	log.Printf("[DEBUG] Function FlattenCertificates finish")
 	return result
 }
 
