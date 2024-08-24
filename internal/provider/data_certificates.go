@@ -142,13 +142,14 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	flatCertificates := certificates.FlattenCertificates(certs)
 	log.Printf("[DEBUG] Function dataCertificateRead, flatCertificates: %+v", flatCertificates)
 	_ = data.Set("certificates", flatCertificates)
-
+	log.Printf("[DEBUG] Function dataCertificateRead, dataset: %+v", data)
 	id, err := createCertificateID(data)
 	if err != nil {
 		return diag.Errorf("error during id generation %s", err)
 	}
 
 	data.SetId(id)
+	log.Printf("[DEBUG] Function dataCertificateRead, dataset with ID: %+v", data)
 	log.Print("[DEBUG] Function dataCertificateRead finish")
 
 	return nil
