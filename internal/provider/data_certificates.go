@@ -129,7 +129,7 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	apiClient := meta.(*api_client.SddcManagerClient).ApiClient
 
 	// Extract the domain_id from ResourceData
-	domainId := data.Get("domain_id").(string)
+	domainId, ok := data.Get("domain_id").(string)
 	if !ok || domainId == "" {
 		return diag.Errorf("domain_id must be set and cannot be empty")
 	}
