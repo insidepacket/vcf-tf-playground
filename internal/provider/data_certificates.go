@@ -126,7 +126,6 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	log.Print("[DEBUG] Function dataCertificateRead start")
 	// Extract the domain_id from ResourceData
 	domainId, ok := data.Get("domain_id").(string)
-	log.Print("[DEBUG] Function dataCertificateRead start")
 	if !ok {
 		log.Print("[DEBUG] Function dataCertificateRead start, domainId not found or not a string")
 	} else {

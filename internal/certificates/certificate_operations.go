@@ -130,8 +130,10 @@ func ReadCertificates(ctx context.Context, client *vcfclient.VcfClient, domainId
 	viewCertificatesParams := certificates.NewGetCertificatesByDomainParamsWithContext(ctx).
 		WithTimeout(constants.DefaultVcfApiCallTimeout)
 	viewCertificatesParams.ID = domainId
+	log.Printf("[DEBUG] Function ReadCertificates, domainId: %s", viewCertificatesParams.ID)
 
 	certificatesResponse, _, err := client.Certificates.GetCertificatesByDomain(viewCertificatesParams)
+	log.Printf("[DEBUG] Function ReadCertificates, certificatesResponse: %s", certificatesResponse)
 
 	if err != nil {
 		return nil, err
