@@ -139,7 +139,20 @@ func ReadCertificates(ctx context.Context, client *vcfclient.VcfClient, domainId
 	if err != nil {
 		return nil, err
 	}
-
+	// Check if there is a payload and elements to log
+	if certificatesResponse.Payload != nil && len(certificatesResponse.Payload.Elements) > 0 {
+		for i, cert := range certificatesResponse.Payload.Elements {
+			// Convert the certificate to JSON format for better readability in logs
+			certJson, err := json.MarshalIndent(cert, "", "  ")
+			if err != nil {
+				log.Printf("[ERROR] Failed to marshal certificate to JSON: %v", err)
+				continue
+			}
+			log.Printf("[DEBUG] Certificate %d: %s", i+1, string(certJson))
+		}
+	} else {
+		log.Printf("[DEBUG] No certificates found for domain ID: %s", domainId)
+	}
 	return certificatesResponse.Payload.Elements, nil
 }
 
@@ -267,7 +280,7 @@ func FlattenCertificates(certs []*models.Certificate) []map[string]interface{} {
 	}
 
 	// Log the resulting map after flattening and before returning
-	log.Printf("[DEBUG] Function FlattenCertificates result: %+v", result)
+	//log.Printf("[DEBUG] Function FlattenCertificates result: %+v", result)
 	log.Printf("[DEBUG] Function FlattenCertificates finish")
 	return result
 }
