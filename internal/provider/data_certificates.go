@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"reflect"
+	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -182,7 +183,7 @@ func createCertificateID(data *schema.ResourceData) (string, error) {
 		params = append(params, getString(certMap, "key_size"))
 		params = append(params, getString(certMap, "not_after"))
 		params = append(params, getString(certMap, "not_before"))
-		//params = append(params, getIntAsString(certMap, "number_of_days_to_expire"))
+		params = append(params, getIntAsString(certMap, "number_of_days_to_expire"))
 		params = append(params, getString(certMap, "pem_encoded"))
 		params = append(params, getString(certMap, "public_key"))
 		params = append(params, getString(certMap, "public_key_algorithm"))
@@ -201,6 +202,14 @@ func createCertificateID(data *schema.ResourceData) (string, error) {
 func getString(certMap map[string]interface{}, key string) string {
 	if val, ok := certMap[key].(string); ok {
 		return val
+	}
+	return ""
+}
+
+// Helper function to get an integer from a map and convert it to string
+func getIntAsString(certMap map[string]interface{}, key string) string {
+	if val, ok := certMap[key].(int); ok {
+		return strconv.Itoa(val)
 	}
 	return ""
 }
