@@ -140,7 +140,7 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	}
 	log.Printf("[DEBUG] Function dataCertificateRead, certs: %+v", certs)
 	// FlattenCertificates expects a slice of certificates
-	flatCertificates := certificates.FlattenCertificates(certs)
+	flatCertificates := certificates.FlattenCertificates(domainId, certs)
 	//log.Printf("[DEBUG] Function dataCertificateRead, flatCertificates: %+v", flatCertificates)
 
 	err = data.Set("certificates", flatCertificates)

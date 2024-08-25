@@ -157,7 +157,7 @@ func ReadCertificates(ctx context.Context, client *vcfclient.VcfClient, domainId
 }
 
 // FlattenCertificates converts certificate data into a format suitable for Terraform
-func FlattenCertificates(certs []*models.Certificate) []map[string]interface{} {
+func FlattenCertificates(domainId string, certs []*models.Certificate) []map[string]interface{} {
 	log.Printf("[DEBUG] Function FlattenCertificates start")
 	var result []map[string]interface{}
 
@@ -165,12 +165,12 @@ func FlattenCertificates(certs []*models.Certificate) []map[string]interface{} {
 		certMap := make(map[string]interface{})
 
 		// Dereference pointer fields or set them to nil
-		if cert.Domain != nil {
-			certMap["domain"] = *cert.Domain
-		} else {
-			certMap["domain"] = nil
-		}
-
+		//if cert.Domain != nil {
+		//	certMap["domain"] = *cert.Domain
+		//} else {
+		//	certMap["domain"] = nil
+		//}
+		certMap["domain"] = domainId
 		if cert.ExpirationStatus != nil {
 			certMap["expiration_status"] = *cert.ExpirationStatus
 		} else {
