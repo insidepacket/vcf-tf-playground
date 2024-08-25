@@ -141,19 +141,14 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	log.Printf("[DEBUG] Function dataCertificateRead, certs: %+v", certs)
 	// FlattenCertificates expects a slice of certificates
 	flatCertificates := certificates.FlattenCertificates(domainId, certs)
-	//log.Printf("[DEBUG] Function dataCertificateRead, flatCertificates: %+v", flatCertificates)
+	log.Printf("[DEBUG] flatCertificates Data type: %s", reflect.TypeOf(flatCertificates))
+	log.Printf("[DEBUG] flatCertificates Data value: %+v", flatCertificates)
 
 	err = data.Set("certificates", flatCertificates)
 	if err != nil {
 		log.Printf("[ERROR] Failed to set certificates: %s", err)
 		return diag.FromErr(err)
 	}
-
-	//retrieved := data.Get("certificates")
-	//log.Printf("[DEBUG] Retrieved certificates: %+v", retrieved)
-
-	log.Printf("[DEBUG] Data type: %s", reflect.TypeOf(data))
-	log.Printf("[DEBUG] Data value: %+v", data)
 
 	id, err := createCertificateID(data)
 	log.Printf("[DEBUG] Function dataCertificateRead, cert-id: %+v", id)
