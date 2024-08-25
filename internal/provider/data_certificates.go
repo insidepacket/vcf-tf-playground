@@ -163,12 +163,12 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 
 func createCertificateID(data *schema.ResourceData) (string, error) {
 	// Fetch the certificates from the data schema
-	certificates := data.Get("certificates").([]interface{})
+	domain_certificates := data.Get("certificates").([]interface{})
 	// Initialize a params slice to store certificate field values
 	var params []string
 
 	// Iterate through the certificates array
-	for _, certInterface := range certificates {
+	for _, certInterface := range domain_certificates {
 		certMap, ok := certInterface.(map[string]interface{})
 		if !ok {
 			continue // Skip this iteration if the type assertion fails
@@ -191,9 +191,10 @@ func createCertificateID(data *schema.ResourceData) (string, error) {
 		params = append(params, getString(certMap, "subject"))
 		params = append(params, getString(certMap, "thumbprint"))
 		params = append(params, getString(certMap, "thumbprint_algorithm"))
-	}
 
+	}
 	return certificates.HashFields(params)
+
 }
 
 // Helper function to get a string from a map
