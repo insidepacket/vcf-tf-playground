@@ -116,7 +116,7 @@ func CertificateSchema() *schema.Resource {
 func FlattenCertificate(cert *models.Certificate) map[string]interface{} {
 	result := make(map[string]interface{})
 	if cert.Domain == nil {
-		result["domain"] = "nil"
+		result["domain"] = "0843d4e3-60b3-4452-96cf-346ae0de12e8"
 	} else {
 		result["domain"] = *cert.Domain
 	}
