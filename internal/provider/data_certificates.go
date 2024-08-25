@@ -321,21 +321,20 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	//flatCertificatesList := []interface{}{flatCertificate}
 	_ = data.Set("certificate", []interface{}{flatCertificate})
 	/*
-			err = data.Set("certificate", flatCertificate)
-			if err != nil {
-				log.Printf("[ERROR] Failed to set certificate: %s", err)
-				return diag.FromErr(err)
-			}
-
-		id, err := createCertificateID(data)
-		log.Printf("[DEBUG] Function dataCertificateRead, cert-id: %+v", id)
+		err = data.Set("certificate", flatCertificate)
 		if err != nil {
-			return diag.Errorf("error during id generation %s", err)
+			log.Printf("[ERROR] Failed to set certificate: %s", err)
+			return diag.FromErr(err)
 		}
-
-		data.SetId(id)
-		log.Printf("[DEBUG] Function dataCertificateRead, dataset with ID: %+v", data)
 	*/
+	id, err := createCertificateID(data)
+	log.Printf("[DEBUG] Function dataCertificateRead, cert-id: %+v", id)
+	if err != nil {
+		return diag.Errorf("error during id generation %s", err)
+	}
+
+	data.SetId(id)
+	log.Printf("[DEBUG] Function dataCertificateRead, dataset with ID: %+v", data)
 	return nil
 }
 
@@ -385,11 +384,21 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 */
 func createCertificateID(data *schema.ResourceData) (string, error) {
 	// Fetch the single certificate from the data schema
-	certInterface := data.Get("certificate").(map[string]interface{})
-	if certInterface == nil {
-		return "", fmt.Errorf("certificate data is not set or is not a valid map")
+	certificatesList := data.Get("certificate").([]interface{})
+	if len(certificatesList) == 0 {
+		return "", fmt.Errorf("no certificates found")
 	}
+	certInterface, ok := certificatesList[0].(map[string]interface{})
+	if !ok {
+		return "", fmt.Errorf("certificate data is not a valid map")
+	}
+	/*
+		certInterface := data.Get("certificate").(map[string]interface{})
 
+		if certInterface == nil {
+			return "", fmt.Errorf("certificate data is not set or is not a valid map")
+		}
+	*/
 	// Initialize a params slice to store certificate field values
 	var params []string
 
