@@ -310,6 +310,11 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 		log.Printf("[ERROR] Failed to read certificate: %s", err)
 		return diag.FromErr(err)
 	}
+
+	if cert == nil {
+		return diag.Errorf("certificate with FQDN %s not found in domain ID %s", resourceFqdn, domainId)
+	}
+
 	log.Printf("[DEBUG] Function dataCertificateRead, cert: %+v", cert)
 
 	// Process and flatten the single certificate
