@@ -268,12 +268,12 @@ func FlattenCertificates(domainId string, certs []*models.Certificate) []map[str
 			certMap["thumbprint_algorithm"] = nil
 		}
 
-		certJSON, err := json.Marshal(certMap)
-		if err != nil {
-			log.Printf("[ERROR] Failed to marshal certificate to JSON: %v", err)
-		} else {
-			log.Printf("[DEBUG] Certificate_JSON: %s", certJSON)
-		}
+		//certJSON, err := json.Marshal(certMap)
+		//if err != nil {
+		//	log.Printf("[ERROR] Failed to marshal certificate to JSON: %v", err)
+		//} else {
+		//	//log.Printf("[DEBUG] Certificate_JSON: %s", certJSON)
+		//}
 
 		// Append the populated map to the results slice
 		result = append(result, certMap)
