@@ -232,6 +232,11 @@ func DataSourceCertificates() *schema.Resource {
 							Computed:    true,
 							Description: "The algorithm used to generate the thumbprint.",
 						},
+						"version": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The version of certificate.",
+						},
 					},
 				},
 			},
@@ -405,6 +410,7 @@ func createCertificateID(data *schema.ResourceData) (string, error) {
 	params = append(params, getString(certInterface, "subject"))
 	params = append(params, getString(certInterface, "thumbprint"))
 	params = append(params, getString(certInterface, "thumbprint_algorithm"))
+	params = append(params, getString(certInterface, "version"))
 
 	// Use a hashing function to create a unique ID based on the certificate fields
 	id, err := certificates.HashFields(params)
