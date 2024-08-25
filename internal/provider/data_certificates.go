@@ -318,7 +318,7 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	log.Printf("[DEBUG] flatCertificate Data value: %+v", flatCertificate)
 
 	// Wrap flatCertificate in a slice
-	flatCertificatesList := []interface{}{flatCertificate}
+	//flatCertificatesList := []interface{}{flatCertificate}
 	err = data.Set("certificate", flatCertificatesList)
 	if err != nil {
 		log.Printf("[ERROR] Failed to set certificate: %s", err)
