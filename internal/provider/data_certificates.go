@@ -300,14 +300,17 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 		log.Printf("[ERROR] Failed to read certificate: %s", err)
 		return diag.FromErr(err)
 	}
-	log.Printf("[DEBUG] Function dataCertificateRead, certs: %+v", cert)
+	log.Printf("[DEBUG] Function dataCertificateRead, cert: %+v", cert)
 
 	// Process and flatten the single certificate
 	flatCertificate := certificates.FlattenCertificate(cert)
 	log.Printf("[DEBUG] flatCertificate Data type: %T", flatCertificate)
 	log.Printf("[DEBUG] flatCertificate Data value: %+v", flatCertificate)
 
-	err = data.Set("certificate", flatCertificate)
+	// Wrap flatCertificate in a slice
+	flatCertificatesList := []interface{}{flatCertificate}
+
+	err = data.Set("certificate", flatCertificatesList)
 	if err != nil {
 		log.Printf("[ERROR] Failed to set certificate: %s", err)
 		return diag.FromErr(err)
