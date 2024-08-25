@@ -388,6 +388,7 @@ func createCertificateID(data *schema.ResourceData) (string, error) {
 
 	// Fetch individual certificate fields and append them to params
 	params = append(params, getString(certInterface, "domain"))
+	params = append(params, getString(certInterface, "certificate_error"))
 	params = append(params, getString(certInterface, "expiration_status"))
 	params = append(params, getBoolAsString(certInterface, "is_installed"))
 	params = append(params, getString(certInterface, "issued_by"))
