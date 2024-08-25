@@ -164,19 +164,17 @@ func FlattenCertificates(domainId string, certs []*models.Certificate) []map[str
 	for _, cert := range certs {
 		certMap := make(map[string]interface{})
 
-		// Dereference pointer fields or set them to nil
-		//if cert.Domain != nil {
-		//	certMap["domain"] = *cert.Domain
-		//} else {
-		//	certMap["domain"] = nil
-		//}
 		certMap["domain"] = domainId
 		if cert.ExpirationStatus != nil {
 			certMap["expiration_status"] = *cert.ExpirationStatus
 		} else {
 			certMap["expiration_status"] = nil
 		}
-
+		if cert.IsInstalled != nil {
+			certMap["is_installed"] = *cert.IsInstalled
+		} else {
+			certMap["is_installed"] = nil
+		}
 		if cert.IssuedBy != nil {
 			certMap["issued_by"] = *cert.IssuedBy
 		} else {

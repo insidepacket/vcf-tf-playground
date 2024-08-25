@@ -39,6 +39,11 @@ func DataSourceCertificates() *schema.Resource {
 							Computed:    true,
 							Description: "The expiration status of the certificate.",
 						},
+						"is_installed": {
+							Type:        schema.TypeBool,
+							Computed:    true,
+							Description: "Whether the certificate is installed or not.",
+						},
 						"issued_by": {
 							Type:        schema.TypeString,
 							Computed:    true,
@@ -178,6 +183,7 @@ func createCertificateID(data *schema.ResourceData) (string, error) {
 		// Fetch individual certificate fields
 		params = append(params, getString(certMap, "domain"))
 		params = append(params, getString(certMap, "expiration_status"))
+		params = append(params, getBoolAsString(certMap, "is_installed"))
 		params = append(params, getString(certMap, "issued_by"))
 		params = append(params, getString(certMap, "issued_to"))
 		params = append(params, getString(certMap, "key_size"))
@@ -210,6 +216,16 @@ func getString(certMap map[string]interface{}, key string) string {
 func getIntAsString(certMap map[string]interface{}, key string) string {
 	if val, ok := certMap[key].(int); ok {
 		return strconv.Itoa(val)
+	}
+	return ""
+}
+
+func getBoolAsString(certMap map[string]interface{}, key string) string {
+	if val, ok := certMap[key].(bool); ok {
+		if val {
+			return "true"
+		}
+		return "false"
 	}
 	return ""
 }
