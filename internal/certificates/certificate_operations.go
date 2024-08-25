@@ -259,7 +259,7 @@ func FlattenCertificates(certs []*models.Certificate) []map[string]interface{} {
 		if err != nil {
 			log.Printf("[ERROR] Failed to marshal certificate to JSON: %v", err)
 		} else {
-			log.Printf("[DEBUG] Certificate: %s", certJSON)
+			log.Printf("[DEBUG] Certificate_JSON: %s", certJSON)
 		}
 
 		// Append the populated map to the results slice
