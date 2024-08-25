@@ -141,6 +141,11 @@ func DataSourceCertificates() *schema.Resource {
 							Computed:    true,
 							Description: "The domain id of the certificate.",
 						},
+						"certificate_error": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "Error related to the certificate if any.",
+						},
 						"expiration_status": {
 							Type:        schema.TypeString,
 							Computed:    true,
