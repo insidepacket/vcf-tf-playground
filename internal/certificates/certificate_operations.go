@@ -8,6 +8,7 @@ import (
 	"context"
 	md52 "crypto/md5"
 	"encoding/hex"
+	"encoding/json"
 	"io"
 	"log"
 	"strings"
@@ -252,6 +253,13 @@ func FlattenCertificates(certs []*models.Certificate) []map[string]interface{} {
 			certMap["thumbprint_algorithm"] = *cert.ThumbprintAlgorithm
 		} else {
 			certMap["thumbprint_algorithm"] = nil
+		}
+
+		certJSON, err := json.Marshal(certMap)
+		if err != nil {
+			log.Printf("[ERROR] Failed to marshal certificate to JSON: %v", err)
+		} else {
+			log.Printf("[DEBUG] Certificate: %s", certJSON)
 		}
 
 		// Append the populated map to the results slice
