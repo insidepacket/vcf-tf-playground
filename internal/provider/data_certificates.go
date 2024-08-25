@@ -141,7 +141,7 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	log.Printf("[DEBUG] Function dataCertificateRead, certs: %+v", certs)
 	// FlattenCertificates expects a slice of certificates
 	flatCertificates := certificates.FlattenCertificates(certs)
-	log.Printf("[DEBUG] Function dataCertificateRead, flatCertificates: %+v", flatCertificates)
+	//log.Printf("[DEBUG] Function dataCertificateRead, flatCertificates: %+v", flatCertificates)
 
 	err = data.Set("certificates", flatCertificates)
 	if err != nil {
@@ -149,8 +149,8 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 		return diag.FromErr(err)
 	}
 
-	retrieved := data.Get("certificates")
-	log.Printf("[DEBUG] Retrieved certificates: %+v", retrieved)
+	//retrieved := data.Get("certificates")
+	//log.Printf("[DEBUG] Retrieved certificates: %+v", retrieved)
 
 	log.Printf("[DEBUG] Data type: %s", reflect.TypeOf(data))
 	log.Printf("[DEBUG] Data value: %+v", data)
@@ -163,7 +163,6 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 
 	data.SetId(id)
 	log.Printf("[DEBUG] Function dataCertificateRead, dataset with ID: %+v", data)
-	log.Print("[DEBUG] Function dataCertificateRead finish")
 
 	return nil
 }
