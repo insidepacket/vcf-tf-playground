@@ -131,7 +131,7 @@ func DataSourceCertificates() *schema.Resource {
 				},
 			*/
 			"certificate": {
-				Type:        schema.TypeMap,
+				Type:        schema.TypeList,
 				Computed:    true,
 				Description: "List of certificates retrieved from the API.",
 				Elem: &schema.Resource{
