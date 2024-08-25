@@ -156,6 +156,26 @@ func ReadCertificates(ctx context.Context, client *vcfclient.VcfClient, domainId
 	return certificatesResponse.Payload.Elements, nil
 }
 
+func ReadCertificate(ctx context.Context, client *vcfclient.VcfClient,
+	domainId, resourceFqdn string) (*models.Certificate, error) {
+	viewCertificatesParams := certificates.NewGetCertificatesByDomainParamsWithContext(ctx).
+		WithTimeout(constants.DefaultVcfApiCallTimeout)
+	viewCertificatesParams.ID = domainId
+
+	certificatesResponse, _, err := client.Certificates.GetCertificatesByDomain(viewCertificatesParams)
+	if err != nil {
+		return nil, err
+	}
+
+	allCertsForDomain := certificatesResponse.Payload.Elements
+	for _, cert := range allCertsForDomain {
+		if cert.IssuedTo != nil && *cert.IssuedTo == resourceFqdn {
+			return cert, nil
+		}
+	}
+	return nil, nil
+}
+
 // FlattenCertificates converts certificate data into a format suitable for Terraform
 func FlattenCertificates(domainId string, certs []*models.Certificate) []map[string]interface{} {
 	log.Printf("[DEBUG] Function FlattenCertificates start")
