@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"log"
+	"reflect"
 	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -141,8 +142,19 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	// FlattenCertificates expects a slice of certificates
 	flatCertificates := certificates.FlattenCertificates(certs)
 	log.Printf("[DEBUG] Function dataCertificateRead, flatCertificates: %+v", flatCertificates)
-	_ = data.Set("certificates", flatCertificates)
-	log.Printf("[DEBUG] Function dataCertificateRead, certificate_dataset: %+v", data)
+
+	err = data.Set("certificates", flatCertificates)
+	if err != nil {
+		log.Printf("[ERROR] Failed to set certificates: %s", err)
+		return diag.FromErr(err)
+	}
+
+	retrieved := data.Get("certificates")
+	log.Printf("[DEBUG] Retrieved certificates: %+v", retrieved)
+
+	log.Printf("[DEBUG] Data type: %s", reflect.TypeOf(data))
+	log.Printf("[DEBUG] Data value: %+v", data)
+
 	id, err := createCertificateID(data)
 	log.Printf("[DEBUG] Function dataCertificateRead, cert-id: %+v", id)
 	if err != nil {
