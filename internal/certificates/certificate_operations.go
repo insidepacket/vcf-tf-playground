@@ -9,6 +9,7 @@ import (
 	md52 "crypto/md5"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"strings"
@@ -164,7 +165,12 @@ func ReadCertificate(ctx context.Context, client *vcfclient.VcfClient,
 
 	certificatesResponse, _, err := client.Certificates.GetCertificatesByDomain(viewCertificatesParams)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to get certificates by domain: %w", err)
+	}
+
+	// Check if any certificates are found
+	if certificatesResponse.Payload == nil || len(certificatesResponse.Payload.Elements) == 0 {
+		return nil, fmt.Errorf("no certificates found for domain ID %s", domainId)
 	}
 
 	allCertsForDomain := certificatesResponse.Payload.Elements
