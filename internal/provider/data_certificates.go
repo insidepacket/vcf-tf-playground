@@ -4,7 +4,6 @@ import (
 	"context"
 	"log"
 	"reflect"
-	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -163,24 +162,44 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 }
 
 func createCertificateID(data *schema.ResourceData) (string, error) {
-	params := []string{
-		data.Get("domain").(string),
-		data.Get("expiration_status").(string),
-		data.Get("issued_by").(string),
-		data.Get("issued_to").(string),
-		data.Get("key_size").(string),
-		data.Get("not_after").(string),
-		data.Get("not_before").(string),
-		strconv.Itoa(data.Get("number_of_days_to_expire").(int)),
-		data.Get("pem_encoded").(string),
-		data.Get("public_key").(string),
-		data.Get("public_key_algorithm").(string),
-		data.Get("serial_number").(string),
-		data.Get("signature_algorithm").(string),
-		data.Get("subject").(string),
-		data.Get("thumbprint").(string),
-		data.Get("thumbprint_algorithm").(string),
+	// Fetch the certificates from the data schema
+	certificates := data.Get("certificates").([]interface{})
+	// Initialize a params slice to store certificate field values
+	var params []string
+
+	// Iterate through the certificates array
+	for _, certInterface := range certificates {
+		certMap, ok := certInterface.(map[string]interface{})
+		if !ok {
+			continue // Skip this iteration if the type assertion fails
+		}
+
+		// Fetch individual certificate fields
+		params = append(params, getString(certMap, "domain"))
+		params = append(params, getString(certMap, "expiration_status"))
+		params = append(params, getString(certMap, "issued_by"))
+		params = append(params, getString(certMap, "issued_to"))
+		params = append(params, getString(certMap, "key_size"))
+		params = append(params, getString(certMap, "not_after"))
+		params = append(params, getString(certMap, "not_before"))
+		//params = append(params, getIntAsString(certMap, "number_of_days_to_expire"))
+		params = append(params, getString(certMap, "pem_encoded"))
+		params = append(params, getString(certMap, "public_key"))
+		params = append(params, getString(certMap, "public_key_algorithm"))
+		params = append(params, getString(certMap, "serial_number"))
+		params = append(params, getString(certMap, "signature_algorithm"))
+		params = append(params, getString(certMap, "subject"))
+		params = append(params, getString(certMap, "thumbprint"))
+		params = append(params, getString(certMap, "thumbprint_algorithm"))
 	}
 
 	return certificates.HashFields(params)
+}
+
+// Helper function to get a string from a map
+func getString(certMap map[string]interface{}, key string) string {
+	if val, ok := certMap[key].(string); ok {
+		return val
+	}
+	return ""
 }
