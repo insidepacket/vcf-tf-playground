@@ -23,8 +23,115 @@ func DataSourceCertificates() *schema.Resource {
 				Required:    true,
 				Description: "The ID of the domain to fetch certificates for.",
 			},
-			"certificates": {
-				Type:        schema.TypeList,
+			"resource_fqdn": {
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "the fqdn of resource certificate.",
+			},
+			/*
+				"certificates": {
+					Type:        schema.TypeList,
+					Computed:    true,
+					Description: "List of certificates retrieved from the API.",
+					Elem: &schema.Resource{
+						Schema: map[string]*schema.Schema{
+							"domain": {
+								Type:        schema.TypeString,
+								Computed:    true,
+								Description: "The domain id of the certificate.",
+							},
+							"expiration_status": {
+								Type:        schema.TypeString,
+								Computed:    true,
+								Description: "The expiration status of the certificate.",
+							},
+							"is_installed": {
+								Type:        schema.TypeBool,
+								Computed:    true,
+								Description: "Whether the certificate is installed or not.",
+							},
+							"issued_by": {
+								Type:        schema.TypeString,
+								Computed:    true,
+								Description: "The entity that issued the certificate.",
+							},
+							"issued_to": {
+								Type:        schema.TypeString,
+								Computed:    true,
+								Description: "The entity to which the certificate was issued.",
+							},
+							"key_size": {
+								Type:        schema.TypeString,
+								Computed:    true,
+								Description: "The size of the key in the certificate.",
+							},
+							"not_after": {
+								Type:        schema.TypeString,
+								Computed:    true,
+								Description: "The date after which the certificate is no longer valid.",
+							},
+							"not_before": {
+								Type:        schema.TypeString,
+								Computed:    true,
+								Description: "The date before which the certificate is not valid.",
+							},
+							"number_of_days_to_expire": {
+								Type:        schema.TypeInt,
+								Computed:    true,
+								Description: "The number of days until the certificate expires.",
+							},
+							"pem_encoded": {
+								Type:        schema.TypeString,
+								Computed:    true,
+								Description: "The PEM-encoded certificate.",
+							},
+							"public_key": {
+								Type:        schema.TypeString,
+								Computed:    true,
+								Description: "The public key of the certificate.",
+							},
+							"public_key_algorithm": {
+								Type:        schema.TypeString,
+								Computed:    true,
+								Description: "The algorithm used for the public key.",
+							},
+							"serial_number": {
+								Type:        schema.TypeString,
+								Computed:    true,
+								Description: "The serial number of the certificate.",
+							},
+							"signature_algorithm": {
+								Type:        schema.TypeString,
+								Computed:    true,
+								Description: "The algorithm used for the certificate's signature.",
+							},
+							"subject": {
+								Type:        schema.TypeString,
+								Computed:    true,
+								Description: "The subject of the certificate.",
+							},
+							"subject_alternative_name": {
+								Type:        schema.TypeList,
+								Computed:    true,
+								Description: "The subject alternative names in the certificate.",
+								Elem:        &schema.Schema{Type: schema.TypeString},
+							},
+							"thumbprint": {
+								Type:        schema.TypeString,
+								Computed:    true,
+								Description: "The thumbprint of the certificate.",
+							},
+							"thumbprint_algorithm": {
+								Type:        schema.TypeString,
+								Computed:    true,
+								Description: "The algorithm used to generate the thumbprint.",
+							},
+						},
+					},
+				},
+			*/
+			"certificate": {
+				Type:        schema.TypeMap,
 				Computed:    true,
 				Description: "List of certificates retrieved from the API.",
 				Elem: &schema.Resource{
