@@ -321,21 +321,21 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	//flatCertificatesList := []interface{}{flatCertificate}
 	_ = data.Set("certificate", []interface{}{flatCertificate})
 	/*
-		err = data.Set("certificate", flatCertificate)
+			err = data.Set("certificate", flatCertificate)
+			if err != nil {
+				log.Printf("[ERROR] Failed to set certificate: %s", err)
+				return diag.FromErr(err)
+			}
+
+		id, err := createCertificateID(data)
+		log.Printf("[DEBUG] Function dataCertificateRead, cert-id: %+v", id)
 		if err != nil {
-			log.Printf("[ERROR] Failed to set certificate: %s", err)
-			return diag.FromErr(err)
+			return diag.Errorf("error during id generation %s", err)
 		}
+
+		data.SetId(id)
+		log.Printf("[DEBUG] Function dataCertificateRead, dataset with ID: %+v", data)
 	*/
-	id, err := createCertificateID(data)
-	log.Printf("[DEBUG] Function dataCertificateRead, cert-id: %+v", id)
-	if err != nil {
-		return diag.Errorf("error during id generation %s", err)
-	}
-
-	data.SetId(id)
-	log.Printf("[DEBUG] Function dataCertificateRead, dataset with ID: %+v", data)
-
 	return nil
 }
 
