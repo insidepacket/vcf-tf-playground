@@ -373,50 +373,49 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	return nil
 }
 
-/*
-	func createCertificatesID(data *schema.ResourceData) (string, error) {
-		// Fetch the certificates from the data schema
-		domain_certificates := data.Get("certificates").([]interface{})
-		// Initialize a params slice to store certificate field values
-		var params []string
+func createCertificatesID(data *schema.ResourceData) (string, error) {
+	// Fetch the certificates from the data schema
+	domain_certificates := data.Get("certificates").([]interface{})
+	// Initialize a params slice to store certificate field values
+	var params []string
 
-		// Iterate through the certificates array
-		for _, certInterface := range domain_certificates {
-			certMap, ok := certInterface.(map[string]interface{})
-			if !ok {
-				continue // Skip this iteration if the type assertion fails
-			}
-
-			// Fetch individual certificate fields
-			params = append(params, getString(certMap, "domain"))
-			params = append(params, getString(certMap, "expiration_status"))
-			params = append(params, getBoolAsString(certMap, "is_installed"))
-			params = append(params, getString(certMap, "issued_by"))
-			params = append(params, getString(certMap, "issued_to"))
-			params = append(params, getString(certMap, "key_size"))
-			params = append(params, getString(certMap, "not_after"))
-			params = append(params, getString(certMap, "not_before"))
-			params = append(params, getIntAsString(certMap, "number_of_days_to_expire"))
-			params = append(params, getString(certMap, "pem_encoded"))
-			params = append(params, getString(certMap, "public_key"))
-			params = append(params, getString(certMap, "public_key_algorithm"))
-			params = append(params, getString(certMap, "serial_number"))
-			params = append(params, getString(certMap, "signature_algorithm"))
-			params = append(params, getString(certMap, "subject"))
-			params = append(params, getString(certMap, "thumbprint"))
-			params = append(params, getString(certMap, "thumbprint_algorithm"))
-
-		}
-		// Use a hashing function to create a unique ID based on the certificate fields
-		id, err := certificates.HashFields(params)
-		if err != nil {
-			return "", fmt.Errorf("error creating hash for certificate ID: %v", err)
+	// Iterate through the certificates array
+	for _, certInterface := range domain_certificates {
+		certMap, ok := certInterface.(map[string]interface{})
+		if !ok {
+			continue // Skip this iteration if the type assertion fails
 		}
 
-		return id, nil
+		// Fetch individual certificate fields
+		params = append(params, getString(certMap, "domain"))
+		params = append(params, getString(certMap, "expiration_status"))
+		params = append(params, getBoolAsString(certMap, "is_installed"))
+		params = append(params, getString(certMap, "issued_by"))
+		params = append(params, getString(certMap, "issued_to"))
+		params = append(params, getString(certMap, "key_size"))
+		params = append(params, getString(certMap, "not_after"))
+		params = append(params, getString(certMap, "not_before"))
+		params = append(params, getIntAsString(certMap, "number_of_days_to_expire"))
+		params = append(params, getString(certMap, "pem_encoded"))
+		params = append(params, getString(certMap, "public_key"))
+		params = append(params, getString(certMap, "public_key_algorithm"))
+		params = append(params, getString(certMap, "serial_number"))
+		params = append(params, getString(certMap, "signature_algorithm"))
+		params = append(params, getString(certMap, "subject"))
+		params = append(params, getString(certMap, "thumbprint"))
+		params = append(params, getString(certMap, "thumbprint_algorithm"))
+
+	}
+	// Use a hashing function to create a unique ID based on the certificate fields
+	id, err := certificates.HashFields(params)
+	if err != nil {
+		return "", fmt.Errorf("error creating hash for certificate ID: %v", err)
+	}
+
+	return id, nil
 
 }
-*/
+
 func createCertificateID(data *schema.ResourceData) (string, error) {
 	// Fetch the single certificate from the data schema
 	certificatesList := data.Get("certificate").([]interface{})
