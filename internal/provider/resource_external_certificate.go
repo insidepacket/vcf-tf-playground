@@ -156,7 +156,7 @@ func resourceResourceExternalCertificateRead(ctx context.Context, data *schema.R
 		return diag.FromErr(err)
 	}
 
-	flattenedCert := certificates.FlattenCertificate(cert)
+	flattenedCert := certificates.FlattenCertificateWithSubject(cert)
 	_ = data.Set("certificate", []interface{}{flattenedCert})
 
 	return nil
