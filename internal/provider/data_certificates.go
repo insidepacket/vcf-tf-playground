@@ -216,6 +216,36 @@ func DataSourceCertificates() *schema.Resource {
 							Computed:    true,
 							Description: "The subject of the certificate.",
 						},
+						"subject_cn": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The subject of the certificate.",
+						},
+						"subject_ou": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The subject of the certificate.",
+						},
+						"subject_org": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The subject of the certificate.",
+						},
+						"subject_locality": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The subject of the certificate.",
+						},
+						"subject_st": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The subject of the certificate.",
+						},
+						"subject_country": {
+							Type:        schema.TypeString,
+							Computed:    true,
+							Description: "The subject of the certificate.",
+						},
 						"subject_alternative_name": {
 							Type:        schema.TypeList,
 							Computed:    true,
@@ -318,7 +348,7 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	log.Printf("[DEBUG] Function dataCertificateRead, cert: %+v", cert)
 
 	// Process and flatten the single certificate
-	flatCertificate := certificates.FlattenCertificate(cert)
+	flatCertificate := certificates.FlattenCertificateWithSubject(cert)
 	log.Printf("[DEBUG] flatCertificate Data type: %T", flatCertificate)
 	log.Printf("[DEBUG] flatCertificate Data value: %+v", flatCertificate)
 
