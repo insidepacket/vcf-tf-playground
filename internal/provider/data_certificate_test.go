@@ -28,6 +28,13 @@ func TestAccDataSourceCertificate(t *testing.T) {
 
 func testAccDataSourceCertificateConfig() string {
 	return `
+provider "vcf" {
+  sddc_manager_username = var.sddc_manager_username
+  sddc_manager_password = var.sddc_manager_password
+  sddc_manager_host     = var.sddc_manager_host
+  allow_unverified_tls  = true
+}
+
 data "vcf_domain" "w01" {
   name = "sfo-w01"
 }
