@@ -1,3 +1,7 @@
+// © Broadcom. All Rights Reserved.
+// The term “Broadcom” refers to Broadcom Inc. and/or its subsidiaries.
+// SPDX-License-Identifier: MPL-2.0
+
 package provider
 
 import (
@@ -239,13 +243,7 @@ func createCertificateID(data *schema.ResourceData) (string, error) {
 	if !ok {
 		return "", fmt.Errorf("certificate data is not a valid map")
 	}
-	/*
-		certInterface := data.Get("certificate").(map[string]interface{})
 
-		if certInterface == nil {
-			return "", fmt.Errorf("certificate data is not set or is not a valid map")
-		}
-	*/
 	// Initialize a params slice to store certificate field values
 	var params []string
 
