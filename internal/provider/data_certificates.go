@@ -458,7 +458,7 @@ func createCertificateID(data *schema.ResourceData) (string, error) {
 	params = append(params, getString(certInterface, "thumbprint_algorithm"))
 	params = append(params, getString(certInterface, "version"))
 
-	// Use a hashing function to create a unique ID based on the certificate fields
+	// Use a hashing function to create a unique ID based on the certificate fields.
 	id, err := certificates.HashFields(params)
 	if err != nil {
 		return "", fmt.Errorf("error creating hash for certificate ID: %v", err)
@@ -467,7 +467,7 @@ func createCertificateID(data *schema.ResourceData) (string, error) {
 	return id, nil
 }
 
-// Helper function to get a string from a map
+// Helper function to get a string from a map.
 func getString(certMap map[string]interface{}, key string) string {
 	if val, ok := certMap[key].(string); ok {
 		return val
@@ -475,7 +475,7 @@ func getString(certMap map[string]interface{}, key string) string {
 	return ""
 }
 
-// Helper function to get an integer from a map and convert it to string
+// Helper function to get an integer from a map and convert it to string.
 func getIntAsString(certMap map[string]interface{}, key string) string {
 	if val, ok := certMap[key].(int); ok {
 		return strconv.Itoa(val)
