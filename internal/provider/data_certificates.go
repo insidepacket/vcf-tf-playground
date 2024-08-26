@@ -121,32 +121,32 @@ func DataSourceCertificates() *schema.Resource {
 						"subject_cn": {
 							Type:        schema.TypeString,
 							Computed:    true,
-							Description: "The subject of the certificate.",
+							Description: "The subject_cn(common name) of the certificate.",
 						},
 						"subject_ou": {
 							Type:        schema.TypeString,
 							Computed:    true,
-							Description: "The subject of the certificate.",
+							Description: "The subject_ou(org unit) of the certificate.",
 						},
 						"subject_org": {
 							Type:        schema.TypeString,
 							Computed:    true,
-							Description: "The subject of the certificate.",
+							Description: "The subject_org of the certificate.",
 						},
 						"subject_locality": {
 							Type:        schema.TypeString,
 							Computed:    true,
-							Description: "The subject of the certificate.",
+							Description: "The subject_locality of the certificate.",
 						},
 						"subject_st": {
 							Type:        schema.TypeString,
 							Computed:    true,
-							Description: "The subject of the certificate.",
+							Description: "The subject_st(state) of the certificate.",
 						},
 						"subject_country": {
 							Type:        schema.TypeString,
 							Computed:    true,
-							Description: "The subject of the certificate.",
+							Description: "The subject_country of the certificate.",
 						},
 						"subject_alternative_name": {
 							Type:        schema.TypeList,
@@ -213,15 +213,9 @@ func dataCertificateRead(ctx context.Context, data *schema.ResourceData, meta in
 	log.Printf("[DEBUG] flatCertificate Data value: %+v", flatCertificate)
 
 	// Wrap flatCertificate in a slice
-	//flatCertificatesList := []interface{}{flatCertificate}
 	_ = data.Set("certificate", []interface{}{flatCertificate})
-	/*
-		err = data.Set("certificate", flatCertificate)
-		if err != nil {
-			log.Printf("[ERROR] Failed to set certificate: %s", err)
-			return diag.FromErr(err)
-		}
-	*/
+
+	// create and set certificateID
 	id, err := createCertificateID(data)
 	log.Printf("[DEBUG] Function dataCertificateRead, cert-id: %+v", id)
 	if err != nil {
