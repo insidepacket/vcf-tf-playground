@@ -4,16 +4,12 @@
 package provider
 
 import (
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
 func TestAccDataSourceCertificate(t *testing.T) {
-	os.Setenv("TF_VAR_sddc_manager_username", "your_username")
-	os.Setenv("TF_VAR_sddc_manager_password", "your_password")
-	os.Setenv("TF_VAR_sddc_manager_host", "https://your-sddc-manager-host")
 	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:                 func() { testAccSDDCManagerOrCloudBuilderPreCheck(t) },
 		ProtoV6ProviderFactories: muxedFactories(),
@@ -31,10 +27,6 @@ func TestAccDataSourceCertificate(t *testing.T) {
 
 func testAccDataSourceCertificateConfig() string {
 	return `
-provider "vcf" {
-  allow_unverified_tls  = true
-}
-
 data "vcf_domain" "w01" {
   name = "sfo-w01"
 }
