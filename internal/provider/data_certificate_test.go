@@ -29,6 +29,7 @@ func TestAccDataSourceCertificate(t *testing.T) {
 					resource.TestCheckResourceAttr("data.vcf_certificate.cert", "certificate.0.signature_algorithm", "SHA256withRSA"),
 					resource.TestCheckResourceAttr("data.vcf_certificate.cert", "certificate.0.expiration_status", "ACTIVE"),
 					resource.TestCheckResourceAttr("data.vcf_certificate.cert", "certificate.0.issued_to", "sfo-w01-vc01.sfo.rainpole.io"),
+					resource.TestCheckResourceAttr("data.vcf_certificate.cert", "certificate.0.issued_by", "CN=rainpole-RPL-AD01-CA, DC=rainpole, DC=io"),
 					resource.TestCheckResourceAttr("data.vcf_certificate.cert", "certificate.0.version", "V3"),
 				),
 			},
