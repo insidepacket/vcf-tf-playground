@@ -19,7 +19,6 @@ func TestAccDataSourceCertificate(t *testing.T) {
 				Config: testAccDataSourceCertificateConfig(),
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr("data.vcf_certificate.cert", "certificate.0.subject_cn", "sfo-w01-vc01.sfo.rainpole.io"),
-					// Add more checks here if needed
 				),
 			},
 		},
