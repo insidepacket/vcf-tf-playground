@@ -17,7 +17,7 @@ import (
 	"github.com/vmware/terraform-provider-vcf/internal/certificates" // Ensure this package exists and contains necessary methods
 )
 
-func DataSourceCertificates() *schema.Resource {
+func DataSourceCertificate() *schema.Resource {
 	return &schema.Resource{
 		ReadContext: dataCertificateRead,
 		Description: "Datasource used to extract certificate details for various resources based on fields like domain, issued_by, issued_to, key_size, and others.",

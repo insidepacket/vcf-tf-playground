@@ -121,7 +121,7 @@ func resourceResourceCertificateRead(ctx context.Context, data *schema.ResourceD
 	domainID := csrIdComponents[1]
 	resourceFqdn := csrIdComponents[3]
 
-	cert, err := certificates.GetCertificateForResourceInDomain(ctx, apiClient, domainID, resourceFqdn)
+	cert, err := certificates.ReadCertificate(ctx, apiClient, domainID, resourceFqdn)
 	if err != nil {
 		return diag.FromErr(err)
 	}
